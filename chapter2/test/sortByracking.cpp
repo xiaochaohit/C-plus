@@ -29,12 +29,13 @@ void sortNum(T list[], T rack[], int n)
 	
 	for(int i = 0; i < n; i++)
 		list[i] = tempList[i];
+	delete [] tempList;
 }
 int main()
 {
 	int n = 5;
-	int list[5] = {4, 3, 9, 3, 7};
-	int rack[5] = {0, 0, 0, 0, 0};
+	int list[] = {4, 3, 9, 3, 7};
+	int rack[] = {0, 0, 0, 0, 0};
 	Racking(list, rack);	//获得名次
 	sortNum(list, rack, n);
 	for(int i = 0; i<sizeof(list)/sizeof(list[0]); i++)
