@@ -2,7 +2,9 @@
 #include <stdlib.h>
 #include <sstream>	//包含ostringstream
 #include <algorithm>//包含find函数	
+#include <iterator>//ostream_iterator
 //类arrayList
+
 
 template <typename T>
 //抽象类
@@ -20,9 +22,9 @@ public:
 		//返回元素theElement第一次出现时的元素
 	virtual void erase (int theIndex) = 0;
 		//删除索引为theIndex的元素
-	/*virtual void insert(int theIndex, const T& theElement) = 0;
+	virtual void insert(int theIndex, const T& theElement) = 0;
 		//在 theIndex位置插入元素theElement
-	virtual void output(std::ostream& out) const = 0;*/
+	virtual void output(std::ostream& out) const = 0;
 
 };
 
@@ -39,7 +41,9 @@ public:
 	T& get (int theIndex) const;
 	int indexOf(const T &theElement) const;
 	void erase (int theIndex);
-	//
+	void insert(int theIndex, const T &theElement);
+	void output(std::ostream& out) const;
+
 	int capacity() const {return arrayLength;}
 
 protected:
@@ -51,10 +55,10 @@ protected:
 
 int main()
 {
-	linearList<int> *x = new arrayList<int>(20);		//x为抽象类linearList的指针，则*x为linearList的一个实例
-	arrayList<int> y(20);
-	//arrayList<double> test(*(arrayList<double> *)x);		
+	linearList<double> *x = new arrayList<double>(10);		//x为抽象类linearList的指针，则*x为linearList的一个实例
+	arrayList<int> y(2), z;
 	//首先(arrayList<double> *)将x强制转化为派生类arrayList的指针，然后再用解释符*，使其成为一个实例，则可将此实例传给构造函数（复制函数））
+
 	return 0;
 }
 
@@ -119,6 +123,56 @@ void arrayList<T>::erase(int theIndex)
 
 	element[--listSize].~T();
 }
+
+template<typename T>
+void changeLength1D(T* a,int oldLength, int newLength)
+{
+	if(newLength < 0);
+		//throw illegalParameterValue("new length must be >= 0");
+
+	T* temp = new T[newLength];
+	int number = std::min(newLength, oldLength);
+	std::copy(a, a+number, temp);
+	a = temp;	
+	delete [] temp;
+}
+
+template <typename T>
+void arrayList<T>::insert(int theIndex, const T& theElement)
+{
+	checkIndex(theIndex);
+
+	if(listSize == arrayLength)
+	{//数组已满，则将数组扩展为两倍大小
+		changeLength1D(element, arrayLength, 2 * arrayLength);
+		arrayLength *= 2;
+	}
+	//把theIndex之后的元素都右移一个位置
+	std::copy_backward(element + theIndex, element + listSize, element + listSize + 1);
+	element[theIndex] = theElement;
+	listSize++;
+}
+
+template<typename T>
+void arrayList <T> ::output(std::ostream& out) const
+{
+	std::copy(element, element + listSize, std::ostream_iterator <T>(std::cout," "));
+}
+
+template <typename T>
+std::ostream& operator << (std::ostream& out, const arrayList<T>& x)
+	{
+		x.output(out);
+		return out;
+	}
+
+
+
+
+
+
+
+
 
 
 
