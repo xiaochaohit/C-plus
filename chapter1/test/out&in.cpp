@@ -1,12 +1,8 @@
 //test ostream & istream
 #include<iostream>
-//using namespace std;
 
-class baseTest{
-public:
-};
 
-class Test: public baseTest
+class Test
 {
     friend std::ostream & operator<<(std::ostream &out, Test &obj);
     friend std::istream & operator >> (std::istream &in, Test &obj);
@@ -27,9 +23,9 @@ private:
 };
 std::ostream & operator<<(std::ostream &out, Test &obj)
 {
-   // out << obj.a << " " << obj.b;
-   //cout << "a:" << " b:" << endl;
-    obj.display();
+    out << obj.a << " " << obj.b;
+    //std::cout << "a:" << " b:" << std::endl;
+    //obj.display();
     return out;
 }
 std::istream & operator>>(std::istream &in, Test &obj)
