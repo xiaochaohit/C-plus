@@ -44,6 +44,8 @@ public:
 	void erase (int theIndex);
 	void insert(int theIndex, const T &theElement);
 	void output() const;
+	template <typename U>
+	friend std::ostream & operator<<(std::ostream &out, arrayList<U> x);	
 	int capacity() const {return arrayLength;}
 
 protected:
@@ -52,6 +54,13 @@ protected:
 	int arrayLength;	//一维数组的容量
 	int listSize;		//线性表元素的个数
 };
+
+template <typename T>
+std::ostream & operator<<(std::ostream &out,arrayList<T> x)
+{
+	x.output();
+	return out;
+}
 
 int main()
 {
@@ -101,7 +110,7 @@ int main()
     y.insert(0,7);
     y.output();
     if(y.empty()) {std::cout << "is empty"<< std::endl;} 
-    
+    std::cout << y;
 	return 0;
 }
 
@@ -202,15 +211,13 @@ void arrayList<T>::insert(int theIndex, const T& theElement)
 template<typename T>
 void arrayList <T> ::output() const
 {
-	/*std::string s;
-	std::copy(element, element + listSize, std::ostream_iterator <T>(s," "));
-	std::cout << s << std::endl;*/
 	for (int i = 0; i < listSize; i++)
 	{
 		std::cout << *(element+i) << " ";
 	}
 		std::cout << std::endl;
 }
+
 
 
 
