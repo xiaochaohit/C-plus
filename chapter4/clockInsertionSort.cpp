@@ -11,7 +11,7 @@ void insertionSort(T a[], int n)
       for (j = i-1; j >= 0 && t < a[j]; j--)
          a[j+1] = a[j];
       a[j+1] = t;
-   }
+   } 
 }
 
 int main()
