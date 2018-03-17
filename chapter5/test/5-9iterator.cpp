@@ -1,6 +1,5 @@
 #include <iostream>
 #include <stddef.h> 	//包含ptrdiff_t ，用于存储两个指针减法的操作结果
-//#include <iterator.h>
 
 template <typename iterator>
 void copy(iterator start, iterator end, iterator to)
