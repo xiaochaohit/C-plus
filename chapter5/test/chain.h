@@ -29,6 +29,7 @@ struct chainNode
 	}
 };
 
+
 template <typename T>
 class chain : public linearList<T>
 {
@@ -112,6 +113,7 @@ template<typename T>
 T& chain<T>::get(int theIndex) const
 {
 	//check the index
+	checkIndex(theIndex);
 	int i = 0;
 	chainNode<T> *getNode = firstNode;
 	while(i < theIndex)
@@ -134,6 +136,77 @@ void chain<T>::checkIndex(int &theIndex) const
 	}
 
 }
+
+template <typename T>
+int chain<T>::indexof(const T& theElement) const
+{
+	chainNode<T> *findNode = firstNode;
+	int i = 0;
+	while(findNode->next != NULL)
+	{
+		if(findNode->element == theElement)
+			return i;
+		else
+			findNode = findNode->next;
+		i++;
+	}
+}
+
+template <typename T>
+void chain<T>::erase(int theIndex)
+{
+	checkIndex(theIndex);
+	chainNode<T> *findNode = firstNode;
+
+	if(theIndex == 0)
+	{
+		findNode = firstNode->next;
+		delete findNode;
+	}
+	else
+	{
+		for(int i = 0; i < theIndex - 1; i++)
+			findNode = findNode->next;
+
+		chainNode<T> *tempNode = findNode;
+		findNode = findNode->next;
+		tempNode->next = findNode->next;
+		delete findNode;
+	}
+	listSize--;
+}
+
+template <typename T>
+void chain<T>::insert(int theIndex, const T& theElement)
+{
+	checkIndex(theIndex);
+	chainNode<T> *insertNode = firstNode;
+	if(theIndex == 0)
+	{
+		firstNode = new chainNode<T>(theElement, firstNode);
+	}
+	else
+	{
+		for(int i = 0; i < theIndex-1; i++)
+			insertNode = insertNode->next;
+		insertNode->next = new chainNode<T>(theElement, insertNode->next);
+	}
+	listSize++;
+}
+
+template<typename T>
+void chain<T>::output(ostream &out) const
+{// Put the list into the stream out.
+   for (chainNode<T>* currentNode = firstNode;
+                      currentNode != NULL;
+                      currentNode = currentNode->next)
+      out << currentNode->element << "  ";
+}
+
+// overload <<
+template <class T>
+ostream& operator<<(ostream& out, const chain<T>& x)
+   {x.output(out); return out;}
 
 
 
